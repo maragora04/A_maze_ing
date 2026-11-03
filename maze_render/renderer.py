@@ -73,21 +73,50 @@ def bg(code: int) -> str:
     return f"\033[48;5;{code}m  \033[0m"
 
 
-WALL_COLOURS = [15, 214, 46, 39, 201]
+WALL_COLOURS = [
+    # Soft Pinks & Roses
+    15, 217, 218, 224, 182, 
+    
+    # Gentle Blues & Cyans
+    153, 159, 117, 152,
+    
+    # Muted Greens & Mints
+    157, 121, 158, 115,
+    
+    # Warm Pastels (Yellows & Peaches)
+    223, 229, 222, 180,
+    
+    # Dusty Lavenders & Purples
+    183, 147, 177, 139
+]
+
+PATH_COLOURS = [
+    # Electric Cyans & Bright Blues
+    51, 45, 81, 39, 123,
+    
+    # Neon Greens & Limes
+    46, 50, 82, 118, 154,
+    
+    # Hot Pinks & Magentas
+    201, 198, 205, 213, 165,
+    
+    # Laser Yellows & Oranges
+    226, 214, 208, 196, 220,
+    
+    # Vivid Purples & Violets
+    93, 129, 141, 135, 171
+]
 
 
-def render(canvas: list[list[int]], wall_colour: int) -> str:
+def render(canvas: list[list[int]], wall_colour: int, path_colours: int) -> str:
     palette = {
         WALL: bg(wall_colour),
         OPEN: "  ",
-        PATH: bg(33),
+        PATH: bg(path_colours),
         ENTRY: bg(201),
         EXIT: bg(196),
         PATTERN: bg(244),
     }
     return "\n".join(
         "".join(palette[tile] for tile in row) for row in canvas)
-# more colors possibly
-# diff sizes
-# perfect = false 
-# seed? no seed ?
+

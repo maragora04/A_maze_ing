@@ -7,12 +7,14 @@
 #clear error messages
 
 import sys
-from typing import Any
+from typing import Any, Optional
 
 from mazegen import MazeGenerator
 from maze_render import (
-    WALL_COLOURS, build_canvas, path_to_cells, render,
+    WALL_COLOURS, PATH_COLOURS, build_canvas, path_to_cells, render,
 )
+
+RED = "\033[38;5;196m"
 
 
 def parse_config(path: str) -> dict[str, Any]:
@@ -23,21 +25,20 @@ def parse_config(path: str) -> dict[str, Any]:
             if not line or line.startswith("#"):
                 continue
             if "=" not in line:
-                raise ValueError(f"line {n}: expected KEY=VALUE")
+                raise ValueError(f"{RED}line {n}: expected KEY=VALUE")
             key, value = line.split("=", 1)
             raw[key.strip()] = value.strip()
 
     missing = {"WIDTH", "HEIGHT", "ENTRY", "EXIT",
                "OUTPUT_FILE", "PERFECT"} - raw.keys()
     if missing:
-        raise ValueError(f"missing keys: {', '.join(sorted(missing))}")
+        raise ValueError(f"{RED}missing keys: {', '.join(sorted(missing))}")
 
     def point(s: str) -> tuple[int, int]:
         x, y = s.split(",")
         return int(x), int(y)
 
-    seed_raw = raw.get("SEED", "")
-    seed = to_int("SEED", seed_raw) if seed_raw else None
+    seed = to_seed(raw.get("SEED", ""))
 
     return {
         "width": to_int("WIDTH", raw["WIDTH"]),
@@ -49,7 +50,19 @@ def parse_config(path: str) -> dict[str, Any]:
         "seed": seed,
     }
 
+def to_seed(value: str) -> Optional[str]:
+    # the seed string None if empty, refuses integers
+    if not value:
+        return None
+    try:
+        int(value)
+    except ValueError:
+        return value
+    raise ValueError(f"{RED}SEED: expected a string, got integer '{value}'")
+
+
 def to_int(key: str, value: str) -> int:
+    # Convert a config value to int, naming the key on failure
     try:
         return int(value)
     except ValueError:
@@ -61,7 +74,5 @@ def to_int(key: str, value: str) -> int:
 def to_point(key: str, value: str) -> tuple[int, int]:
     parts = value.split(",")
     if len(parts) != 2:
-        raise ValueError(f"{key}: expected 'x,y', got '{value}'")
+        raise ValueError(f"{RED}{key}: expected 'x,y', got '{value}'")
     return to_int(key, parts[0].strip()), to_int(key, parts[1].strip())
-
-# possibly more i missed

@@ -32,7 +32,7 @@ class MazeGenerator:
         entry: Cell,
         exit_: Cell,
         perfect: bool = True,
-        seed: Optional[int] = None,
+        seed: Optional[str] = None,
     ) -> None:
         # validate, then store everything
         self.width = width
@@ -40,7 +40,8 @@ class MazeGenerator:
         self.entry = entry
         self.exit = exit_
         self.perfect = perfect
-        self.seed = seed if seed is not None else random.randrange(2**32)
+        self.seed: str = (seed if seed is not None
+            else "".join(random.choices("NESW", k=16)))
         self._rng = random.Random(self.seed)
         self.grid: list[list[int]] = []
         self.pattern: set[Cell] = set()

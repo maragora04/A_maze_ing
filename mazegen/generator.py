@@ -30,7 +30,8 @@ TWO = [
 
 
 class MazeGenerator:
-    """Generates perfect and Pac-Man style mazes with customizable parameters."""
+    """Generates perfect and Pac-Man style mazes \
+    with customizable parameters."""
 
     def __init__(
         self,
@@ -124,7 +125,8 @@ class MazeGenerator:
         return found
 
     def _carve(self, x: int, y: int, d: int) -> None:
-        """Carve an open passage between (x, y) and its neighbour in direction d.
+        """Carve an open passage between (x, y) \
+        and its neighbour in direction d.
 
         Args:
             x: Cell X coordinate.
@@ -136,7 +138,8 @@ class MazeGenerator:
         self.grid[ny][nx] &= ~OPPOSITE[d]
 
     def _place_pattern(self) -> None:
-        """Position the fully enclosed '42' pattern in the center of the grid."""
+        """Position the fully enclosed '42' pattern \
+        in the center of the grid."""
         self.pattern = set()
         self.pattern_fits = True
         if self.width < 9 or self.height < 7:

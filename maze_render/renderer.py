@@ -114,7 +114,8 @@ PATH_COLOURS = [
 ]
 
 
-def render(canvas: list[list[int]], wall_colour: int, path_colours: int) -> str:
+def render(canvas: list[list[int]],
+           wall_colour: int, path_colours: int) -> str:
     """Convert the 2D canvas into a multi-line colorized string.
 
     Args:

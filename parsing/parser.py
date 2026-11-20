@@ -39,23 +39,27 @@ def parse_config(path: str) -> dict[str, Any]:
     width = to_int("WIDTH", raw["WIDTH"])
     height = to_int("HEIGHT", raw["HEIGHT"])
     if width <= 0 or height <= 0:
-        raise ValueError(f"{RED}WIDTH and HEIGHT must be strictly positive integers.")
+        raise ValueError(f"{RED}WIDTH and HEIGHT must be strictly positive \
+                         integers.")
 
     entry = to_point("ENTRY", raw["ENTRY"])
     exit_ = to_point("EXIT", raw["EXIT"])
 
     if not (0 <= entry[0] < width and 0 <= entry[1] < height):
-        raise ValueError(f"{RED}ENTRY {entry} is outside the maze dimensions ({width}x{height}).")
+        raise ValueError(f"{RED}ENTRY {entry} is outside the maze dimensions \
+                         ({width}x{height}).")
 
     if not (0 <= exit_[0] < width and 0 <= exit_[1] < height):
-        raise ValueError(f"{RED}EXIT {exit_} is outside the maze dimensions ({width}x{height}).")
+        raise ValueError(f"{RED}EXIT {exit_} is outside the maze dimensions \
+                         ({width}x{height}).")
 
     if entry == exit_:
         raise ValueError(f"{RED}ENTRY and EXIT coordinates must be distinct.")
 
     perfect_str = raw["PERFECT"].lower()
     if perfect_str not in ("true", "false"):
-        raise ValueError(f"{RED}PERFECT must be 'True' or 'False', got '{raw['PERFECT']}'")
+        raise ValueError(f"{RED}PERFECT must be 'True' or 'False', \
+                         got '{raw['PERFECT']}'")
 
     seed = to_seed(raw.get("SEED", ""))
 
@@ -99,7 +103,8 @@ def to_int(key: str, value: str) -> int:
     try:
         return int(value)
     except ValueError:
-        raise ValueError(f"{RED}{key}: expected an integer, got '{value}'") from None
+        raise ValueError(
+            f"{RED}{key}: expected an integer, got '{value}'") from None
 
 
 def to_point(key: str, value: str) -> tuple[int, int]:
@@ -118,4 +123,5 @@ def to_point(key: str, value: str) -> tuple[int, int]:
     parts = value.split(",")
     if len(parts) != 2:
         raise ValueError(f"{RED}{key}: expected 'x,y', got '{value}'")
-    return to_int(f"{key} X", parts[0].strip()), to_int(f"{key} Y", parts[1].strip())
+    return to_int(f"{key} X", parts[0].strip()), to_int(f"{key} Y",
+                                                        parts[1].strip())

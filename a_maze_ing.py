@@ -89,7 +89,8 @@ def main() -> None:
         canvas = build_canvas(
             gen.grid, cfg["entry"], cfg["exit"], gen.pattern, path
         )
-        print(render(canvas, WALL_COLOURS[colour_idx], PATH_COLOURS[colour_idx2]))
+        print(render(canvas, WALL_COLOURS[colour_idx],
+                     PATH_COLOURS[colour_idx2]))
         print("=== A-Maze-ing ===")
         print(f"{GREY}{MENU}")
 
